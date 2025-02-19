@@ -18,7 +18,7 @@ Este repositório contém informações e exemplos sobre os principais arquivos 
 
 ## Consultas Úteis
 
-Para facilitar a consulta das configurações atuais do PostgreSQL, disponibilizamos alguns comandos SQL prontos para uso. Esses comandos estão disponíveis no arquivo `Comandos PSQL/consultas_configuracoes.sql`.
+Para facilitar a consulta das configurações atuais do PostgreSQL, disponibilizamos alguns comandos SQL prontos para uso. Esses comandos estão disponíveis no arquivo `Comandos PLpgSQL/consultas_configuracoes.sql`.
 
 - **Consultar parâmetros específicos**:
   - O comando abaixo lista parâmetros importantes, como `listen_addresses`, `max_connections`, `shared_buffers`, etc., organizados por contexto.
@@ -35,7 +35,7 @@ Para facilitar a consulta das configurações atuais do PostgreSQL, disponibiliz
 
 # Comandos Básicos do PostgreSQL
 
-Este repositório contém uma lista abrangente de **comandos básicos do PostgreSQL**, organizados por categorias, como conexão e navegação, criação de bancos de dados, manipulação de tabelas, usuários, esquemas, privilégios, tablespaces, backup e restauração, atualização de versão e manipulação de instâncias. Esses comandos estão disponíveis no arquivo `Comandos PSQL/Comandos_básicos_PSQL.sql`.
+Este repositório contém uma lista abrangente de **comandos básicos do PostgreSQL**, organizados por categorias, como conexão e navegação, criação de bancos de dados, manipulação de tabelas, usuários, esquemas, privilégios, tablespaces, backup e restauração, atualização de versão e manipulação de instâncias. Esses comandos estão disponíveis no arquivo `Comandos PLpgSQL/Comandos_básicos_PLSQL.sql`.
 
 ## O Que Está Incluído?
 
