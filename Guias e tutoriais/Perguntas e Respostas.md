@@ -185,16 +185,17 @@ O PostgreSQL usa o parâmetro **max_connections** para controlar o número máxi
 
 Configuração básica do PgBouncer:
 
-[databases]
+    [databases]
 
-meu_banco = host=localhost port=5432 dbname=meu_banco
+    meu_banco = host=localhost port=5432 dbname=meu_banco
 
-[pgbouncer]
-listen_port = 6432
-listen_addr = 127.0.0.1
-auth_type = md5
-pool_mode = session
-max_client_conn = 100
+    [pgbouncer]
+
+    listen_port = 6432
+    listen_addr = 127.0.0.1
+    auth_type = md5
+    pool_mode = session
+    max_client_conn = 100
 
 Isso melhora o desempenho e reduz a sobrecarga.
 
