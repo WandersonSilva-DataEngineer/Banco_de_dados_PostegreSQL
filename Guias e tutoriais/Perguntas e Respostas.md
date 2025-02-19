@@ -79,7 +79,7 @@ CREATE TABLESPACE fast_storage LOCATION '/mnt/ssd';
 CREATE TABLE minha_tabela (...) TABLESPACE fast_storage;
 
 ---
-________________________________________
+
 ## 9. Como o PostgreSQL lida com funções de janela e qual é a diferença entre elas e agregações regulares?
 Funções de janela, como ROW_NUMBER() ou RANK(), permitem realizar cálculos sobre um conjunto de linhas sem agrupá-las. Diferente de agregações tradicionais, elas mantêm as linhas individuais.
 
@@ -88,12 +88,16 @@ Exemplo:
 SELECT nome, salario, RANK() OVER (ORDER BY salario DESC) FROM funcionarios;
 Isso retorna o ranking de salários sem perder os detalhes de cada funcionário.
 
+---
+
 ## 10. O que são extensões no PostgreSQL e como elas podem ser úteis?
 Extensões adicionam funcionalidades ao PostgreSQL. Alguns exemplos:
 •	PostGIS : Para dados geoespaciais.
 •	pg_partman : Para particionamento automático.
 •	Citus : Para escalabilidade horizontal.
 Elas são incríveis porque expandem as capacidades do PostgreSQL sem reinventar a roda.
+
+---
 
 ## 11. Como você gerenciaria backups e restauração no PostgreSQL?
 Para backups, eu usaria ferramentas como:
