@@ -144,19 +144,19 @@ As vantagens incluem melhor desempenho em consultas filtradas por chave de parti
 - **Triggers** : São funções automáticas executadas em resposta a eventos específicos, como INSERT, UPDATE ou 
 DELETE. Por exemplo:
 
-    CREATE OR REPLACE FUNCTION atualizar_log() RETURNS TRIGGER AS $$
+        CREATE OR REPLACE FUNCTION atualizar_log() RETURNS TRIGGER AS $$
 
-    BEGIN
+        BEGIN
         
-        INSERT INTO log_operacoes (operacao, data) VALUES (TG_OP, NOW());
+            INSERT INTO log_operacoes (operacao, data) VALUES (TG_OP, NOW());
         
-        RETURN NEW;
+            RETURN NEW;
 
-    END;
-    
-    $$ LANGUAGE plpgsql;
+        END;
 
-    CREATE TRIGGER trigger_log AFTER INSERT ON vendas FOR EACH ROW EXECUTE FUNCTION atualizar_log();
+        $$ LANGUAGE plpgsql;
+
+        CREATE TRIGGER trigger_log AFTER INSERT ON vendas FOR EACH ROW EXECUTE FUNCTION atualizar_log();
 
 - **Procedimentos armazenados** : São blocos de código SQL reutilizáveis. No PostgreSQL, usamos funções para isso:
 
