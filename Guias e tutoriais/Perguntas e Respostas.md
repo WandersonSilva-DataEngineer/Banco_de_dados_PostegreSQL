@@ -206,8 +206,8 @@ A replicação lógica replica apenas partes específicas dos dados, como tabela
 
 Exemplo de configuração de replicação lógica:
 
-- CREATE PUBLICATION minha_publicacao FOR TABLE clientes;
-- CREATE SUBSCRIPTION minha_assinatura CONNECTION 'host=secundario dbname=meu_banco' PUBLICATION minha_publicacao;
+    CREATE PUBLICATION minha_publicacao FOR TABLE clientes;
+    CREATE SUBSCRIPTION minha_assinatura CONNECTION 'host=secundario dbname=meu_banco' PUBLICATION minha_publicacao;
 
 É útil quando preciso replicar apenas dados específicos ou integrar sistemas heterogêneos.
 
@@ -216,7 +216,7 @@ Exemplo de configuração de replicação lógica:
 ## 17. Como você lidaria com um problema de deadlock no PostgreSQL?
 Um deadlock ocorre quando duas transações bloqueiam recursos que a outra precisa. Para diagnosticar, verifico os logs ou uso:
 
-- SELECT * FROM pg_stat_activity WHERE waiting = true;
+    SELECT * FROM pg_stat_activity WHERE waiting = true;
 
 Para resolver, ajusto a ordem de acesso aos recursos ou uso transações mais curtas. Também monitoro regularmente para evitar problemas futuros.
 
@@ -225,15 +225,15 @@ Para resolver, ajusto a ordem de acesso aos recursos ou uso transações mais cu
 ## 18. O que são roles e como elas são usadas para gerenciar permissões no PostgreSQL?
 Roles são usadas para gerenciar autenticação e autorização. Posso criar roles com diferentes privilégios:
 
-- CREATE ROLE leitor LOGIN PASSWORD 'senha';
+    CREATE ROLE leitor LOGIN PASSWORD 'senha';
 
-- GRANT SELECT ON ALL TABLES IN SCHEMA public TO leitor;
+    GRANT SELECT ON ALL TABLES IN SCHEMA public TO leitor;
 
 Elas também podem ser hierárquicas:
 
-- CREATE ROLE admin;
+    CREATE ROLE admin;
 
-- GRANT admin TO leitor;
+    GRANT admin TO leitor;
 
 Isso facilita a gestão de permissões em ambientes complexos.
 
@@ -241,9 +241,9 @@ Isso facilita a gestão de permissões em ambientes complexos.
 O PostgreSQL suporta dois tipos JSON: JSON (armazena texto) e JSONB (armazena binário). O JSONB é mais eficiente para consultas.
 Exemplo:
 
-- CREATE TABLE produtos (id SERIAL, dados JSONB);
-- INSERT INTO produtos (dados) VALUES ('{"nome": "Camiseta", "preco": 50}');
-- SELECT dados->>'nome' AS nome, (dados->>'preco')::NUMERIC AS preco FROM produtos;
+    CREATE TABLE produtos (id SERIAL, dados JSONB);
+    INSERT INTO produtos (dados) VALUES ('{"nome": "Camiseta", "preco": 50}');
+    SELECT dados->>'nome' AS nome, (dados->>'preco')::NUMERIC AS preco FROM produtos;
 
 É útil para trabalhar com dados semi-estruturados, como APIs ou logs.
 
@@ -254,11 +254,9 @@ Views materializadas armazenam resultados de consultas complexas para melhorar o
 
 Exemplo:
 
-- CREATE MATERIALIZED VIEW mv_vendas_por_mes AS
-SELECT EXTRACT(YEAR FROM data) AS ano, EXTRACT(MONTH FROM data) AS mes, SUM(valor) AS total
-FROM vendas GROUP BY ano, mes;
+    CREATE MATERIALIZED VIEW mv_vendas_por_mes AS SELECT EXTRACT(YEAR FROM data) AS ano, EXTRACT(MONTH FROM data) AS mes, SUM(valor) AS total FROM vendas GROUP BY ano, mes;
 
-- REFRESH MATERIALIZED VIEW mv_vendas_por_mes;
+    REFRESH MATERIALIZED VIEW mv_vendas_por_mes;
 
 Uso quando consultas demoram muito e os dados não precisam ser atualizados em tempo real.
 
@@ -268,10 +266,10 @@ Uso quando consultas demoram muito e os dados não precisam ser atualizados em t
 
 Implementaria:
 
-- SSL/TLS : Para criptografar conexões.
-- Autenticação forte : Usando certificados ou LDAP.
-- Controle de acesso : Atribuindo permissões mínimas necessárias.
-- Auditoria : Habilitando logs para monitorar atividades suspeitas.
+- **SSL/TLS** : Para criptografar conexões.
+- **Autenticação forte** : Usando certificados ou LDAP.
+- **Controle de acesso** : Atribuindo permissões mínimas necessárias.
+- **Auditoria** : Habilitando logs para monitorar atividades suspeitas.
 
 ---
 
@@ -280,8 +278,8 @@ O PostgreSQL executa consultas em paralelo usando múltiplos processadores. Isso
 
 Exemplo:
 
-- SET max_parallel_workers_per_gather = 4;
-- EXPLAIN ANALYZE SELECT * FROM grandes_dados WHERE valor > 1000;
+    SET max_parallel_workers_per_gather = 4;
+    EXPLAIN ANALYZE SELECT * FROM grandes_dados WHERE valor > 1000;
 
 Requisitos: Tabelas grandes, índice ausente ou consulta intensiva.
 
@@ -291,18 +289,18 @@ Requisitos: Tabelas grandes, índice ausente ou consulta intensiva.
 
 Usaria:
 
-- Particionamento : Dividir a tabela.
-- Indexação : Criar índices adequados.
-- Arquivamento : Mover dados antigos para tabelas separadas.
-- Tablespaces : Armazenar em discos rápidos.
+- **Particionamento** : Dividir a tabela.
+- **Indexação** : Criar índices adequados.
+- **Arquivamento** : Mover dados antigos para tabelas separadas.
+- **Tablespaces** : Armazenar em discos rápidos.
 ________________________________________
 ## 24. O que são checkpoints no PostgreSQL e como eles afetam o desempenho?
 Checkpoints gravam todas as mudanças pendentes no disco. Eles podem impactar o desempenho se forem frequentes. 
 
 Para otimizar:
 
-checkpoint_timeout = 15min
-max_wal_size = 2GB
+    checkpoint_timeout = 15min
+    max_wal_size = 2GB
 
 ---
 
