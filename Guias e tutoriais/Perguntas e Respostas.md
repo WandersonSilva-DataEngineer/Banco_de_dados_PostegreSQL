@@ -75,8 +75,8 @@ Tablespaces permitem armazenar dados em locais físicos diferentes. Por exemplo,
 
 Isso é útil para otimizar o uso de disco e melhorar o desempenho. Por exemplo:
 
-- CREATE TABLESPACE fast_storage LOCATION '/mnt/ssd';
-- CREATE TABLE minha_tabela (...) TABLESPACE fast_storage;
+    CREATE TABLESPACE fast_storage LOCATION '/mnt/ssd';
+    CREATE TABLE minha_tabela (...) TABLESPACE fast_storage;
 
 ---
 
@@ -85,7 +85,7 @@ Funções de janela, como ROW_NUMBER() ou RANK(), permitem realizar cálculos so
 
 Exemplo:
 
-- SELECT nome, salario, RANK() OVER (ORDER BY salario DESC) FROM funcionarios;
+    SELECT nome, salario, RANK() OVER (ORDER BY salario DESC) FROM funcionarios;
 
 Isso retorna o ranking de salários sem perder os detalhes de cada funcionário.
 
@@ -93,9 +93,11 @@ Isso retorna o ranking de salários sem perder os detalhes de cada funcionário.
 
 ## 10. O que são extensões no PostgreSQL e como elas podem ser úteis?
 Extensões adicionam funcionalidades ao PostgreSQL. Alguns exemplos:
-- PostGIS : Para dados geoespaciais.
-- pg_partman : Para particionamento automático.
-- Citus : Para escalabilidade horizontal.
+
+- **PostGIS** : Para dados geoespaciais.
+- **pg_partman** : Para particionamento automático.
+- **Citus** : Para escalabilidade horizontal.
+
 Elas são incríveis porque expandem as capacidades do PostgreSQL sem reinventar a roda.
 
 ---
@@ -103,14 +105,14 @@ Elas são incríveis porque expandem as capacidades do PostgreSQL sem reinventar
 ## 11. Como você gerenciaria backups e restauração no PostgreSQL?
 Para backups, eu usaria ferramentas como:
 
-- pg_dump : Para backups lógicos de tabelas ou bancos de dados inteiros.
+- **pg_dump** : Para backups lógicos de tabelas ou bancos de dados inteiros.
 pg_dump -U usuario -d meu_banco -f backup.sql
-- pg_basebackup : Para backups físicos do cluster inteiro.
+- **pg_basebackup** : Para backups físicos do cluster inteiro.
 pg_basebackup -U usuario -D /caminho/para/backup -Ft -z
-- Barman : Uma ferramenta de backup gerenciada externamente que suporta backups incrementais e diferenciais.
+- **Barman** : Uma ferramenta de backup gerenciada externamente que suporta backups incrementais e diferenciais.
 Para restauração, dependendo do tipo de backup:
-- pg_restore para backups feitos com pg_dump em formato personalizado.
-- Reinicialização do cluster para backups físicos.
+- **pg_restore** para backups feitos com pg_dump em formato personalizado.
+- **Reinicialização do cluster** para backups físicos.
 
 Também implementaria uma estratégia de retenção de backups e testaria regularmente a restauração para garantir que tudo funcione conforme o esperado.
 
@@ -119,10 +121,10 @@ O FDW permite acessar dados de fontes externas diretamente no PostgreSQL. Ele fu
 
 Por exemplo, posso criar uma tabela externa que aponta para um banco de dados MySQL:
 
-- CREATE EXTENSION postgres_fdw;
-- CREATE SERVER servidor_mysql FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host 'mysql_host', dbname 'mysql_db');
-- CREATE USER MAPPING FOR CURRENT_USER SERVER servidor_mysql OPTIONS (user 'usuario', password 'senha');
-- CREATE FOREIGN TABLE tabela_externa (...) SERVER servidor_mysql OPTIONS (table_name 'tabela_mysql');
+    CREATE EXTENSION postgres_fdw;
+    CREATE SERVER servidor_mysql FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host 'mysql_host', dbname 'mysql_db');
+    CREATE USER MAPPING FOR CURRENT_USER SERVER servidor_mysql OPTIONS (user 'usuario', password 'senha');
+    CREATE FOREIGN TABLE tabela_externa (...) SERVER servidor_mysql OPTIONS (table_name 'tabela_mysql');
 
 Isso é útil para integrações entre sistemas sem precisar migrar dados fisicamente.
 
@@ -133,8 +135,8 @@ O PostgreSQL suporta particionamento declarativo desde a versão 10. Com ele, po
 
 Exemplo de particionamento por intervalo:
 
-- CREATE TABLE vendas (id SERIAL, data DATE, valor NUMERIC) PARTITION BY RANGE (data);
-- CREATE TABLE vendas_2023_01 PARTITION OF vendas FOR VALUES FROM ('2023-01-01') TO ('2023-02-01');
+    CREATE TABLE vendas (id SERIAL, data DATE, valor NUMERIC) PARTITION BY RANGE (data);
+    CREATE TABLE vendas_2023_01 PARTITION OF vendas FOR VALUES FROM ('2023-01-01') TO ('2023-02-01');
 
 As vantagens incluem melhor desempenho em consultas filtradas por chave de partição, manutenção simplificada e redução de custos de armazenamento.
 
