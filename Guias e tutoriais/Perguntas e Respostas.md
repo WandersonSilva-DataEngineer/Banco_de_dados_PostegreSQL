@@ -295,7 +295,7 @@ Usaria:
 - Arquivamento : Mover dados antigos para tabelas separadas.
 - Tablespaces : Armazenar em discos rápidos.
 ________________________________________
-# 24. O que são checkpoints no PostgreSQL e como eles afetam o desempenho?
+## 24. O que são checkpoints no PostgreSQL e como eles afetam o desempenho?
 Checkpoints gravam todas as mudanças pendentes no disco. Eles podem impactar o desempenho se forem frequentes. 
 
 Para otimizar:
