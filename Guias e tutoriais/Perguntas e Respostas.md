@@ -147,9 +147,13 @@ DELETE. Por exemplo:
     CREATE OR REPLACE FUNCTION atualizar_log() RETURNS TRIGGER AS $$
 
     BEGIN
+        
         INSERT INTO log_operacoes (operacao, data) VALUES (TG_OP, NOW());
+        
         RETURN NEW;
+
     END;
+    
     $$ LANGUAGE plpgsql;
 
     CREATE TRIGGER trigger_log AFTER INSERT ON vendas FOR EACH ROW EXECUTE FUNCTION atualizar_log();
