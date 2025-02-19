@@ -1,4 +1,4 @@
-# Perguntas e Respostas sobre PostgreSQL
+# Perguntas e Respostas sobre PostgreSQL - Nível Sênior
 
 ## 1. O que você entende sobre MVCC (Controle de Concorrência Multiversão) no PostgreSQL?
 O MVCC é um recurso fundamental do PostgreSQL que permite que várias transações ocorram simultaneamente sem bloqueios excessivos. Ele funciona mantendo versões antigas das linhas enquanto novas transações estão em andamento. Isso garante consistência e isolamento.
