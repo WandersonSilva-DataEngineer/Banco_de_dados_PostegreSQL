@@ -92,21 +92,23 @@ Isso retorna o ranking de salários sem perder os detalhes de cada funcionário.
 
 ## 10. O que são extensões no PostgreSQL e como elas podem ser úteis?
 Extensões adicionam funcionalidades ao PostgreSQL. Alguns exemplos:
-•	PostGIS : Para dados geoespaciais.
-•	pg_partman : Para particionamento automático.
-•	Citus : Para escalabilidade horizontal.
+- PostGIS : Para dados geoespaciais.
+- pg_partman : Para particionamento automático.
+- Citus : Para escalabilidade horizontal.
 Elas são incríveis porque expandem as capacidades do PostgreSQL sem reinventar a roda.
 
 ---
 
 ## 11. Como você gerenciaria backups e restauração no PostgreSQL?
 Para backups, eu usaria ferramentas como:
-•	pg_dump : Para backups lógicos de tabelas ou bancos de dados inteiros.
+
+- pg_dump : Para backups lógicos de tabelas ou bancos de dados inteiros.
 pg_dump -U usuario -d meu_banco -f backup.sql
-•	pg_basebackup : Para backups físicos do cluster inteiro.
+- pg_basebackup : Para backups físicos do cluster inteiro.
 pg_basebackup -U usuario -D /caminho/para/backup -Ft -z
-•	Barman : Uma ferramenta de backup gerenciada externamente que suporta backups incrementais e diferenciais.
+- Barman : Uma ferramenta de backup gerenciada externamente que suporta backups incrementais e diferenciais.
 Para restauração, dependendo do tipo de backup:
-•	pg_restore para backups feitos com pg_dump em formato personalizado.
-•	Reinicialização do cluster para backups físicos.
+- pg_restore para backups feitos com pg_dump em formato personalizado.
+- Reinicialização do cluster para backups físicos.
+
 Também implementaria uma estratégia de retenção de backups e testaria regularmente a restauração para garantir que tudo funcione conforme o esperado.
