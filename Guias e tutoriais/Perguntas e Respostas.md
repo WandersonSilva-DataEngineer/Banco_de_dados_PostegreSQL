@@ -75,8 +75,8 @@ Tablespaces permitem armazenar dados em locais físicos diferentes. Por exemplo,
 
 Isso é útil para otimizar o uso de disco e melhorar o desempenho. Por exemplo:
 
-CREATE TABLESPACE fast_storage LOCATION '/mnt/ssd';
-CREATE TABLE minha_tabela (...) TABLESPACE fast_storage;
+- CREATE TABLESPACE fast_storage LOCATION '/mnt/ssd';
+- CREATE TABLE minha_tabela (...) TABLESPACE fast_storage;
 
 ---
 
@@ -85,7 +85,8 @@ Funções de janela, como ROW_NUMBER() ou RANK(), permitem realizar cálculos so
 
 Exemplo:
 
-SELECT nome, salario, RANK() OVER (ORDER BY salario DESC) FROM funcionarios;
+- SELECT nome, salario, RANK() OVER (ORDER BY salario DESC) FROM funcionarios;
+
 Isso retorna o ranking de salários sem perder os detalhes de cada funcionário.
 
 ---
@@ -112,3 +113,75 @@ Para restauração, dependendo do tipo de backup:
 - Reinicialização do cluster para backups físicos.
 
 Também implementaria uma estratégia de retenção de backups e testaria regularmente a restauração para garantir que tudo funcione conforme o esperado.
+
+## 12. O que é o recurso de "Foreign Data Wrapper" (FDW) no PostgreSQL e como ele pode ser usado?
+O FDW permite acessar dados de fontes externas diretamente no PostgreSQL. Ele funciona como um "adaptador" para conectar o PostgreSQL a outros bancos de dados ou até arquivos CSV.
+
+Por exemplo, posso criar uma tabela externa que aponta para um banco de dados MySQL:
+
+- CREATE EXTENSION postgres_fdw;
+- CREATE SERVER servidor_mysql FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host 'mysql_host', dbname 'mysql_db');
+- CREATE USER MAPPING FOR CURRENT_USER SERVER servidor_mysql OPTIONS (user 'usuario', password 'senha');
+- CREATE FOREIGN TABLE tabela_externa (...) SERVER servidor_mysql OPTIONS (table_name 'tabela_mysql');
+
+Isso é útil para integrações entre sistemas sem precisar migrar dados fisicamente.
+
+---
+
+## 13. Como o PostgreSQL lida com partições de tabelas e quais são as vantagens?
+O PostgreSQL suporta particionamento declarativo desde a versão 10. Com ele, podemos dividir uma tabela grande em partes menores, chamadas de partições, com base em critérios como intervalos ou listas.
+
+Exemplo de particionamento por intervalo:
+
+- CREATE TABLE vendas (id SERIAL, data DATE, valor NUMERIC) PARTITION BY RANGE (data);
+- CREATE TABLE vendas_2023_01 PARTITION OF vendas FOR VALUES FROM ('2023-01-01') TO ('2023-02-01');
+
+As vantagens incluem melhor desempenho em consultas filtradas por chave de partição, manutenção simplificada e redução de custos de armazenamento.
+
+---
+
+## 14. O que são triggers e procedimentos armazenados no PostgreSQL?
+- **Triggers** : São funções automáticas executadas em resposta a eventos específicos, como INSERT, UPDATE ou 
+DELETE. Por exemplo:
+
+CREATE OR REPLACE FUNCTION atualizar_log() RETURNS TRIGGER AS $$
+
+BEGIN
+    INSERT INTO log_operacoes (operacao, data) VALUES (TG_OP, NOW());
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_log AFTER INSERT ON vendas FOR EACH ROW EXECUTE FUNCTION atualizar_log();
+
+- **Procedimentos armazenados** : São blocos de código SQL reutilizáveis. No PostgreSQL, usamos funções para isso:
+
+CREATE OR REPLACE FUNCTION calcular_total_vendas(data_inicio DATE, data_fim DATE) RETURNS NUMERIC AS $$
+
+DECLARE
+    total NUMERIC := 0;
+BEGIN
+    SELECT SUM(valor) INTO total FROM vendas WHERE data BETWEEN data_inicio AND data_fim;
+    RETURN total;
+END;
+
+$$ LANGUAGE plpgsql;
+
+Ambos são úteis para automatizar tarefas e garantir consistência.
+
+---
+
+## 15. Como o PostgreSQL lida com conexões simultâneas e como você ajustaria o pool de conexões?
+O PostgreSQL usa o parâmetro max_connections para controlar o número máximo de conexões simultâneas. No entanto, muitas conexões podem sobrecarregar o servidor. Para resolver isso, uso PgBouncer , um pool de conexões que reutiliza conexões existentes.
+Configuração básica do PgBouncer:
+[databases]
+meu_banco = host=localhost port=5432 dbname=meu_banco
+
+[pgbouncer]
+listen_port = 6432
+listen_addr = 127.0.0.1
+auth_type = md5
+pool_mode = session
+max_client_conn = 100
+Isso melhora o desempenho e reduz a sobrecarga.
+
