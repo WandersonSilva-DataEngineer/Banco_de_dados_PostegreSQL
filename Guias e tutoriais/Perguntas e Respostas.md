@@ -144,28 +144,28 @@ As vantagens incluem melhor desempenho em consultas filtradas por chave de parti
 - **Triggers** : São funções automáticas executadas em resposta a eventos específicos, como INSERT, UPDATE ou 
 DELETE. Por exemplo:
 
-CREATE OR REPLACE FUNCTION atualizar_log() RETURNS TRIGGER AS $$
+    CREATE OR REPLACE FUNCTION atualizar_log() RETURNS TRIGGER AS $$
 
-BEGIN
-    INSERT INTO log_operacoes (operacao, data) VALUES (TG_OP, NOW());
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
+    BEGIN
+        INSERT INTO log_operacoes (operacao, data) VALUES (TG_OP, NOW());
+        RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_log AFTER INSERT ON vendas FOR EACH ROW EXECUTE FUNCTION atualizar_log();
+    CREATE TRIGGER trigger_log AFTER INSERT ON vendas FOR EACH ROW EXECUTE FUNCTION atualizar_log();
 
 - **Procedimentos armazenados** : São blocos de código SQL reutilizáveis. No PostgreSQL, usamos funções para isso:
 
-CREATE OR REPLACE FUNCTION calcular_total_vendas(data_inicio DATE, data_fim DATE) RETURNS NUMERIC AS $$
+    CREATE OR REPLACE FUNCTION calcular_total_vendas(data_inicio DATE, data_fim DATE) RETURNS NUMERIC AS $$
 
-DECLARE
-    total NUMERIC := 0;
-BEGIN
-    SELECT SUM(valor) INTO total FROM vendas WHERE data BETWEEN data_inicio AND data_fim;
-    RETURN total;
-END;
+    DECLARE
+        total NUMERIC := 0;
+    BEGIN
+        SELECT SUM(valor) INTO total FROM vendas WHERE data BETWEEN data_inicio AND data_fim;
+        RETURN total;
+    END;
 
-$$ LANGUAGE plpgsql;
+    $$ LANGUAGE plpgsql;
 
 Ambos são úteis para automatizar tarefas e garantir consistência.
 
