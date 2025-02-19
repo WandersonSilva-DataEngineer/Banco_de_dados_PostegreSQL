@@ -116,6 +116,8 @@ Para restauração, dependendo do tipo de backup:
 
 Também implementaria uma estratégia de retenção de backups e testaria regularmente a restauração para garantir que tudo funcione conforme o esperado.
 
+---
+
 ## 12. O que é o recurso de "Foreign Data Wrapper" (FDW) no PostgreSQL e como ele pode ser usado?
 O FDW permite acessar dados de fontes externas diretamente no PostgreSQL. Ele funciona como um "adaptador" para conectar o PostgreSQL a outros bancos de dados ou até arquivos CSV.
 
