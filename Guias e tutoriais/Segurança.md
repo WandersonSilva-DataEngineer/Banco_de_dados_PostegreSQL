@@ -18,18 +18,18 @@ A autenticação remota sem criptografia pode expor senhas e dados sensíveis du
         ssl_key_file = 'server.key'
 
 2- Configure o pg_hba.conf para exigir SSL :
-Adicione uma entrada para forçar conexões seguras:
-conf
-Copy
-1
-hostssl all all 0.0.0.0/0 md5
-Teste a conexão SSL :
-Use o cliente psql para conectar-se com SSL:
-bash
-Copy
-1
-psql "host=meu-servidor dbname=minha_base user=usuario sslmode=require"
-2. Introdução à Segurança - Restrições a Usuários
+- Adicione uma entrada para forçar conexões seguras:
+
+        hostssl all all 0.0.0.0/0 md5
+
+3- Teste a conexão SSL :
+- Use o cliente psql para conectar-se com SSL:
+
+        psql "host=meu-servidor dbname=minha_base user=usuario sslmode=require"
+
+---
+
+## 2. Introdução à Segurança - Restrições a Usuários
 Por que é importante?
 Restringir permissões minimiza os riscos de acesso não autorizado ou alterações acidentais.
 
