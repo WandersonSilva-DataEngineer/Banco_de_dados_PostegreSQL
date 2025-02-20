@@ -79,13 +79,13 @@ Os logs estarão disponíveis no diretório especificado em logging_collector.
 
 ## 4. Coletando Mudanças Usando Triggers
 
-1- Por que é importante?
+### Por que é importante?
 
 Triggers permitem registrar automaticamente alterações em uma tabela de auditoria.
 
 ### Como configurar:
 
-- Crie uma tabela de auditoria :
+1- Crie uma tabela de auditoria :
 
         CREATE TABLE auditoria (
 
@@ -133,34 +133,36 @@ Triggers permitem registrar automaticamente alterações em uma tabela de audito
 
         $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_auditoria
-AFTER INSERT OR UPDATE OR DELETE ON minha_tabela
-FOR EACH ROW EXECUTE FUNCTION registrar_alteracao();
-5. Criptografia de Dados Confidenciais
-Por que é importante?
+
+        CREATE TRIGGER trigger_auditoria
+
+        AFTER INSERT OR UPDATE OR DELETE ON minha_tabela
+
+        FOR EACH ROW EXECUTE FUNCTION registrar_alteracao();
+
+## 5. Criptografia de Dados Confidenciais
+### Por que é importante?
+
 Criptografar dados sensíveis protege contra acessos não autorizados, mesmo em caso de violação.
 
-Como configurar:
-Use extensões para criptografia :
-Instale a extensão pgcrypto:
-sql
-Copy
-1
-CREATE EXTENSION pgcrypto;
-Criptografe dados ao inserir :
-sql
-Copy
-1
-2
-⌄
-INSERT INTO usuarios (nome, senha)
-VALUES ('joao', crypt('senha_segura', gen_salt('bf')));
-Verifique a senha criptografada :
-sql
-Copy
-1
-SELECT * FROM usuarios WHERE senha = crypt('senha_segura', senha);
-6. Implementando uma Row Level Security (RLS)
+### Como configurar:
+
+1- Use extensões para criptografia :
+- Instale a extensão pgcrypto:
+
+        CREATE EXTENSION pgcrypto;
+
+2- Criptografe dados ao inserir :
+
+        INSERT INTO usuarios (nome, senha)
+
+        VALUES ('joao', crypt('senha_segura', gen_salt('bf')));
+
+3- Verifique a senha criptografada :
+
+        SELECT * FROM usuarios WHERE senha = crypt('senha_segura', senha);
+
+## 6. Implementando uma Row Level Security (RLS)
 Por que é importante?
 A RLS permite controlar o acesso a linhas específicas com base em políticas.
 
