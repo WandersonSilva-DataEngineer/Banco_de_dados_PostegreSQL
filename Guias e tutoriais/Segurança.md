@@ -56,6 +56,8 @@ Restringir permissões minimiza os riscos de acesso não autorizado ou alteraç�
 
         GRANT admin TO leitor;
 
+---
+
 ## 3. Auditando as Alterações de Dados
 
 Por que é importante?
@@ -76,6 +78,8 @@ Por que é importante?
 2- Verifique os logs :
 
 Os logs estarão disponíveis no diretório especificado em logging_collector.
+
+---
 
 ## 4. Coletando Mudanças Usando Triggers
 
@@ -140,6 +144,8 @@ Triggers permitem registrar automaticamente alterações em uma tabela de audito
 
         FOR EACH ROW EXECUTE FUNCTION registrar_alteracao();
 
+---
+
 ## 5. Criptografia de Dados Confidenciais
 ### Por que é importante?
 
@@ -161,6 +167,8 @@ Criptografar dados sensíveis protege contra acessos não autorizados, mesmo em 
 3- Verifique a senha criptografada :
 
         SELECT * FROM usuarios WHERE senha = crypt('senha_segura', senha);
+
+---
 
 ## 6. Implementando uma Row Level Security (RLS)
 Por que é importante?
@@ -186,7 +194,10 @@ FOR SELECT
 USING (usuario_atual = current_user);
 Exemplo de consulta restrita :
 Somente o usuário associado às linhas poderá visualizá-las.
-7. Inspecionando Permissões
+
+---
+
+## 7. Inspecionando Permissões
 Por que é importante?
 Inspecionar permissões regularmente ajuda a identificar configurações inadequadas.
 
