@@ -10,8 +10,11 @@ A autenticação remota sem criptografia pode expor senhas e dados sensíveis du
 ### Como configurar:
 1- Habilite SSL no PostgreSQL :
 - Edite o arquivo postgresql.conf:
+    
     ssl = on
+    
     ssl_cert_file = 'server.crt'
+    
     ssl_key_file = 'server.key'
 
 2- Configure o pg_hba.conf para exigir SSL :
