@@ -2,6 +2,8 @@
 
 Este guia aborda as melhores práticas de segurança para proteger seu banco de dados PostgreSQL. Ele inclui exemplos práticos de como configurar autenticação segura, restringir permissões, auditar alterações e proteger dados confidenciais.
 
+---
+
 ## 1. Autenticação Remota e Segura com SSL
 ### Por que é importante?
 
@@ -30,112 +32,106 @@ A autenticação remota sem criptografia pode expor senhas e dados sensíveis du
 ---
 
 ## 2. Introdução à Segurança - Restrições a Usuários
-Por que é importante?
+### Por que é importante?
+
 Restringir permissões minimiza os riscos de acesso não autorizado ou alterações acidentais.
 
-Como configurar:
-Crie usuários com privilégios mínimos :
-sql
-Copy
-1
-2
-3
-CREATE ROLE leitor LOGIN PASSWORD 'senha_segura';
-GRANT CONNECT ON DATABASE minha_base TO leitor;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO leitor;
-Revogue permissões desnecessárias :
-sql
-Copy
-1
-REVOKE ALL ON DATABASE minha_base FROM PUBLIC;
-Use roles hierárquicas :
-sql
-Copy
-1
-2
-CREATE ROLE admin;
-GRANT admin TO leitor;
-3. Auditando as Alterações de Dados
-Por que é importante?
-Auditar alterações ajuda a identificar atividades suspeitas e garantir conformidade.
+### Como configurar:
 
-Como configurar:
-Habilite logs de auditoria :
-Edite o arquivo postgresql.conf:
-conf
-Copy
-1
-2
-3
-log_statement = 'mod'  -- Registra INSERT, UPDATE, DELETE
-log_connections = on
-log_disconnections = on
-Verifique os logs :
-Os logs estarão disponíveis no diretório especificado em logging_collector.
-4. Coletando Mudanças Usando Triggers
+1- Crie usuários com privilégios mínimos :
+
+        CREATE ROLE leitor LOGIN PASSWORD 'senha_segura';
+
+        GRANT CONNECT ON DATABASE minha_base TO leitor;
+
+        GRANT SELECT ON ALL TABLES IN SCHEMA public TO leitor;
+
+2- Revogue permissões desnecessárias :
+
+        REVOKE ALL ON DATABASE minha_base FROM PUBLIC;
+
+3- Use roles hierárquicas :
+
+        CREATE ROLE admin;
+
+        GRANT admin TO leitor;
+
+## 3. Auditando as Alterações de Dados
+
 Por que é importante?
+
+### Auditar alterações ajuda a identificar atividades suspeitas e garantir conformidade.
+
+### Como configurar:
+
+1- Habilite logs de auditoria :
+- Edite o arquivo postgresql.conf:
+
+        log_statement = 'mod'  -- Registra INSERT, UPDATE, DELETE
+
+        log_connections = on
+
+        log_disconnections = on
+
+2- Verifique os logs :
+
+Os logs estarão disponíveis no diretório especificado em logging_collector.
+
+## 4. Coletando Mudanças Usando Triggers
+
+1- Por que é importante?
+
 Triggers permitem registrar automaticamente alterações em uma tabela de auditoria.
 
-Como configurar:
-Crie uma tabela de auditoria :
-sql
-Copy
-1
-2
-3
-4
-5
-6
-7
-⌄
-CREATE TABLE auditoria (
-    id SERIAL PRIMARY KEY,
-    operacao TEXT,
-    tabela TEXT,
-    registro JSONB,
-    data TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-Crie um trigger para registrar alterações :
-sql
-Copy
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-⌄
-⌄
-⌄
-⌄
-CREATE OR REPLACE FUNCTION registrar_alteracao() RETURNS TRIGGER AS $$
-BEGIN
-    IF TG_OP = 'INSERT' THEN
-        INSERT INTO auditoria (operacao, tabela, registro)
-        VALUES ('INSERT', TG_TABLE_NAME, row_to_json(NEW));
-    ELSIF TG_OP = 'UPDATE' THEN
-        INSERT INTO auditoria (operacao, tabela, registro)
-        VALUES ('UPDATE', TG_TABLE_NAME, row_to_json(NEW));
-    ELSIF TG_OP = 'DELETE' THEN
-        INSERT INTO auditoria (operacao, tabela, registro)
-        VALUES ('DELETE', TG_TABLE_NAME, row_to_json(OLD));
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
+### Como configurar:
+
+- Crie uma tabela de auditoria :
+
+        CREATE TABLE auditoria (
+
+            id SERIAL PRIMARY KEY,
+
+            operacao TEXT,
+
+            tabela TEXT,
+
+            registro JSONB,
+
+            data TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+        );
+
+2- Crie um trigger para registrar alterações :
+
+        CREATE OR REPLACE FUNCTION registrar_alteracao() RETURNS TRIGGER AS $$
+
+        BEGIN
+
+            IF TG_OP = 'INSERT' THEN
+
+                INSERT INTO auditoria (operacao, tabela, registro)
+
+                VALUES ('INSERT', TG_TABLE_NAME, row_to_json(NEW));
+
+            ELSIF TG_OP = 'UPDATE' THEN
+
+                INSERT INTO auditoria (operacao, tabela, registro)
+
+                VALUES ('UPDATE', TG_TABLE_NAME, row_to_json(NEW));
+
+            ELSIF TG_OP = 'DELETE' THEN
+
+                INSERT INTO auditoria (operacao, tabela, registro)
+
+                VALUES ('DELETE', TG_TABLE_NAME, row_to_json(OLD));
+
+            END IF;
+
+            RETURN NEW;
+
+        END;
+
+        $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trigger_auditoria
 AFTER INSERT OR UPDATE OR DELETE ON minha_tabela
