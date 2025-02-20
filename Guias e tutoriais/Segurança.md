@@ -171,55 +171,52 @@ Criptografar dados sensíveis protege contra acessos não autorizados, mesmo em 
 ---
 
 ## 6. Implementando uma Row Level Security (RLS)
-Por que é importante?
+### Por que é importante?
+
 A RLS permite controlar o acesso a linhas específicas com base em políticas.
 
-Como configurar:
-Habilite a RLS na tabela :
-sql
-Copy
-1
-ALTER TABLE minha_tabela ENABLE ROW LEVEL SECURITY;
-Crie uma política de segurança :
-sql
-Copy
-1
-2
-3
-4
-⌄
-CREATE POLICY politica_leitura
-ON minha_tabela
-FOR SELECT
-USING (usuario_atual = current_user);
-Exemplo de consulta restrita :
-Somente o usuário associado às linhas poderá visualizá-las.
+### Como configurar:
+1- Habilite a RLS na tabela :
+
+        ALTER TABLE minha_tabela ENABLE ROW LEVEL SECURITY;
+
+2 - Crie uma política de segurança :
+
+        CREATE POLICY politica_leitura
+
+        ON minha_tabela
+
+        FOR SELECT
+
+        USING (usuario_atual = current_user);
+
+3- Exemplo de consulta restrita :
+
+- Somente o usuário associado às linhas poderá visualizá-las.
 
 ---
 
 ## 7. Inspecionando Permissões
-Por que é importante?
+### Por que é importante?
+
 Inspecionar permissões regularmente ajuda a identificar configurações inadequadas.
 
-Como configurar:
-Liste permissões de tabelas :
-sql
-Copy
-1
-\z minha_tabela
-Liste todas as roles e suas permissões :
-sql
-Copy
-1
-2
-⌄
-SELECT rolname, rolsuper, rolcreaterole, rolcreatedb, rolcanlogin
-FROM pg_roles;
-Revise permissões desnecessárias :
-Revogue permissões excessivas:
-sql
-Copy
-1
-REVOKE ALL PRIVILEGES ON DATABASE minha_base FROM usuario_desnecessario;
-Conclusão
+### Como configurar:
+
+1- Liste permissões de tabelas :
+
+        \z minha_tabela
+
+2- Liste todas as roles e suas permissões :
+
+        SELECT rolname, rolsuper, rolcreaterole, rolcreatedb, rolcanlogin
+        FROM pg_roles;
+
+3- Revise permissões desnecessárias :
+- Revogue permissões excessivas:
+
+        REVOKE ALL PRIVILEGES ON DATABASE minha_base FROM usuario_desnecessario;
+
+## Conclusão
+
 Implementar medidas de segurança no PostgreSQL é essencial para proteger seus dados e garantir a integridade do sistema. Este guia fornece exemplos práticos para configurar autenticação segura, auditar alterações, criptografar dados e muito mais. Certifique-se de revisar regularmente suas configurações e ajustá-las conforme necessário para manter seu banco de dados seguro.
