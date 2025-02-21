@@ -145,107 +145,104 @@ bash
 Crie um script chamado pg_backup_rotated.sh:
 
 bash
-Copy
-1
-2
-3
-4
-#!/bin/bash
-DATA=$(date +%Y%m%d)
-find /backups -type f -mtime +7 -exec rm {} \;
-pg_dump -U postgres -d meudb_admin -F c -b -v -f /backups/meudb_admin_$DATA.backup
-find /backups -type f -mtime +7 -exec rm {} \;: Remove backups com mais de 7 dias.
+
+        #!/bin/bash
+        DATA=$(date +%Y%m%d)
+        find /backups -type f -mtime +7 -exec rm {} \;
+        pg_dump -U postgres -d meudb_admin -F c -b -v -f /backups/meudb_admin_$DATA.backup
+
+- find /backups -type f -mtime +7 -exec rm {} \;: Remove backups com mais de 7 dias.
+
 Explicação : Este script realiza backups diários e remove arquivos antigos.
 
-4. Ferramentas Avançadas
-PgBackRest
-O PgBackRest é uma ferramenta robusta para backups e restaurações incrementais.
+## 4. Ferramentas Avançadas
+### PgBackRest
 
-Configuração
-Instale o PgBackRest:
+O **PgBackRest** é uma ferramenta robusta para backups e restaurações incrementais.
+
+#### Configuração
+
+1- Instale o PgBackRest:
+
 bash
-Copy
-1
-sudo apt install pgbackrest
-Configure o arquivo /etc/pgbackrest.conf:
+
+        sudo apt install pgbackrest
+
+2- Configure o arquivo /etc/pgbackrest.conf:
+
 ini
-Copy
-1
-2
-3
-4
-5
-6
-[global]
-repo1-path=/var/lib/pgbackrest
-repo1-retention-full=2
 
-[meudb_admin]
-pg1-path=/var/lib/postgresql/data
-Execute o backup:
-bash
-Copy
-1
-pgbackrest --stanza=meudb_admin --type=full backup
-Restauração
-bash
-Copy
-1
-pgbackrest --stanza=meudb_admin --type=time "--target=2023-10-01 12:00:00" restore
-Point-in-Time Recovery (PITR)
-O PITR permite restaurar o banco de dados até um ponto específico no tempo.
+        [global]
 
-Configuração
-Habilite o WAL Archiving no postgresql.conf:
+        repo1-path=/var/lib/pgbackrest
+
+        repo1-retention-full=2
+
+        [meudb_admin]
+
+        pg1-path=/var/lib/postgresql/data
+
+3- Execute o backup:
+bash
+
+        pgbackrest --stanza=meudb_admin --type=full backup
+
+### Restauração
+bash
+
+        pgbackrest --stanza=meudb_admin --type=time "--target=2023-10-01 12:00:00" restore
+
+## Point-in-Time Recovery (PITR)
+
+O **PITR** permite restaurar o banco de dados até um ponto específico no tempo.
+
+### Configuração
+1- Habilite o WAL Archiving no postgresql.conf:
 conf
-Copy
-1
-2
-3
-wal_level = replica
-archive_mode = on
-archive_command = 'cp %p /caminho/para/wal/%f'
-Realize um backup base:
-bash
-Copy
-1
-pg_basebackup -U postgres -D /caminho/para/backup --wal-method=stream
-Configure o arquivo recovery.conf:
-conf
-Copy
-1
-2
-restore_command = 'cp /caminho/para/wal/%f %p'
-recovery_target_time = '2023-10-01 12:00:00'
-Barman
-O Barman é uma ferramenta externa para gerenciamento centralizado de backups.
 
-Configuração
-Instale o Barman:
+        wal_level = replica
+        archive_mode = on
+        archive_command = 'cp %p /caminho/para/wal/%f'
+
+2- Realize um backup base:
 bash
-Copy
-1
-sudo apt install barman
-Configure o arquivo /etc/barman.conf:
+
+        pg_basebackup -U postgres -D /caminho/para/backup --wal-method=stream
+
+3- Configure o arquivo recovery.conf:
+conf
+
+        restore_command = 'cp /caminho/para/wal/%f %p'
+        recovery_target_time = '2023-10-01 12:00:00'
+
+## Barman
+
+O **Barman** é uma ferramenta externa para gerenciamento centralizado de backups.
+
+### Configuração
+1- Instale o Barman:
+bash
+
+        sudo apt install barman
+
+2- Configure o arquivo /etc/barman.conf:
 ini
-Copy
-1
-2
-3
-4
-[meudb_admin]
-description = "Backup do meu banco"
-conninfo = host=localhost user=postgres dbname=meudb_admin
-backup_method = postgres
-Execute o backup:
+
+        [meudb_admin]
+        description = "Backup do meu banco"
+        conninfo = host=localhost user=postgres dbname=meudb_admin
+        backup_method = postgres
+
+3- Execute o backup:
 bash
-Copy
-1
-barman backup meudb_admin
-Restauração:
+
+        barman backup meudb_admin
+
+4- Restauração:
 bash
-Copy
-1
-barman recover meudb_admin latest /var/lib/postgresql/data
-Conclusão
+
+        barman recover meudb_admin latest /var/lib/postgresql/data
+
+##Conclusão
+
 Este guia apresenta métodos de backup e restauração no PostgreSQL, desde comandos básicos até ferramentas avançadas como PgBackRest , PITR e Barman . Use essas informações para implementar estratégias eficientes de backup e garantir a segurança dos seus dados.
