@@ -46,7 +46,7 @@ bash
 
 - -N public: Exclui o schema público do backup.
 
-*Explicação :* Este comando cria um backup excluindo o schema public.
+Explicação : Este comando cria um backup excluindo o schema public.
 
 ### Backup com Inserts Explícitos
 bash
@@ -56,7 +56,7 @@ bash
 - -F p: Formato texto plano (SQL).
 - --column-inserts: Gera instruções INSERT explícitas para cada linha.
 
-*Explicação :* Este comando gera um backup SQL com instruções INSERT, útil para restaurações incrementais.
+Explicação : Este comando gera um backup SQL com instruções INSERT, útil para restaurações incrementais.
 
 ### Backup Paralelo
 bash
@@ -67,7 +67,7 @@ bash
 - -j 3: Usa 3 processos paralelos.
 - -Fd: Formato diretório (suporta backups paralelos).
 
-*Explicação :* Este comando realiza um backup paralelo em formato de diretório.
+Explicação : Este comando realiza um backup paralelo em formato de diretório.
 
 ### Backup Global (pg_dumpall)
 bash
@@ -76,7 +76,9 @@ bash
 
 - --globals-only: Faz backup apenas dos objetos globais (roles, tablespaces, etc.).
 
-*Explicação :* Este comando salva as configurações globais do cluster PostgreSQL.
+Explicação : Este comando salva as configurações globais do cluster PostgreSQL.
+
+---
 
 ## 2. Métodos de Restauração
 
@@ -88,55 +90,57 @@ bash
 - -U username: Usuário para autenticação.
 - -f backupfile.sql: Arquivo SQL contendo o backup.
 
-*Explicação :* Este comando restaura um backup SQL no banco de dados especificado.
+Explicação : Este comando restaura um backup SQL no banco de dados especificado.
 
-Restauração com pg_restore
+### Restauração com pg_restore
 bash
-Copy
-1
-pg_restore --verbose --clean --no-acl --no-owner --host localhost -U postgres --dbname meudb_admin meudb_admin.tar
---verbose: Mostra detalhes da restauração.
---clean: Remove objetos existentes antes da restauração.
---no-acl: Ignora permissões.
---no-owner: Define o proprietário atual como dono dos objetos restaurados.
+
+        pg_restore --verbose --clean --no-acl --no-owner --host localhost -U postgres --dbname meudb_admin meudb_admin.tar
+
+- --verbose: Mostra detalhes da restauração.
+- --clean: Remove objetos existentes antes da restauração.
+- --no-acl: Ignora permissões.
+- --no-owner: Define o proprietário atual como dono dos objetos restaurados.
+
 Explicação : Este comando restaura um backup no formato tar ou personalizado.
 
-Restauração com Criação de Banco de Dados
+### Restauração com Criação de Banco de Dados
 bash
-Copy
-1
-pg_restore -h localhost -p 5432 --list -U postgres --dbname=postgres --create --verbose meudb_admin.tar
---create: Cria automaticamente o banco de dados durante a restauração.
+
+        pg_restore -h localhost -p 5432 --list -U postgres --dbname=postgres --create --verbose meudb_admin.tar
+
+- --create: Cria automaticamente o banco de dados durante a restauração.
+
 Explicação : Este comando restaura o backup e cria o banco de dados se ele não existir.
 
-3. Automação de Backups no Linux
-Script Básico de Backup
+## 3. Automação de Backups no Linux
+
+### Script Básico de Backup
+
 Crie um script chamado pg_backup.sh:
 
 bash
-Copy
-1
-2
-3
-#!/bin/bash
-DATA=$(date +%Y%m%d)
-pg_dump -U postgres -d meudb_admin -F c -b -v -f /backups/meudb_admin_$DATA.backup
-DATA=$(date +%Y%m%d): Captura a data atual.
--F c: Formato personalizado.
--b: Inclui blobs grandes.
--v: Modo verboso.
--f: Salva o backup em /backups/.
-Execução Automática :
+
+        #!/bin/bash
+        DATA=$(date +%Y%m%d)
+        pg_dump -U postgres -d meudb_admin -F c -b -v -f /backups/meudb_admin_$DATA.backup
+
+- DATA=$(date +%Y%m%d): Captura a data atual.
+- -F c: Formato personalizado.
+- -b: Inclui blobs grandes.
+- -v: Modo verboso.
+- -f: Salva o backup em /backups/.
+
+#### Execução Automática :
 Adicione ao cron:
 
 bash
-Copy
-1
-2
-crontab -e
-0 2 * * * /caminho/para/pg_backup.sh
-Executa o backup diariamente às 2h.
-Script com Rotação de Backups
+        crontab -e
+        0 2 * * * /caminho/para/pg_backup.sh
+
+- Executa o backup diariamente às 2h.
+
+### Script com Rotação de Backups
 Crie um script chamado pg_backup_rotated.sh:
 
 bash
