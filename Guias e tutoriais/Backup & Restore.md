@@ -19,7 +19,7 @@ bash
 - -W: Solicita a senha do usuário.
 - -F t: Formato do backup (tar).
 - meudb_admin: Nome do banco de dados.
-- >meudb_admin.tar: Redireciona a saída para um arquivo tar.
+- meudb_admin.tar: Redireciona a saída para um arquivo tar.
 
 *Explicação :* Este comando cria um backup completo do banco de dados meudb_admin no formato tar.
 
