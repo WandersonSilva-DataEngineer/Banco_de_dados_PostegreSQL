@@ -135,6 +135,7 @@ bash
 Adicione ao cron:
 
 bash
+
         crontab -e
         0 2 * * * /caminho/para/pg_backup.sh
 
