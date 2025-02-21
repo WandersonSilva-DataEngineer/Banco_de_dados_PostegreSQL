@@ -113,6 +113,8 @@ bash
 
 Explicação : Este comando restaura o backup e cria o banco de dados se ele não existir.
 
+---
+
 ## 3. Automação de Backups no Linux
 
 ### Script Básico de Backup
@@ -154,6 +156,8 @@ bash
 - find /backups -type f -mtime +7 -exec rm {} \;: Remove backups com mais de 7 dias.
 
 Explicação : Este script realiza backups diários e remove arquivos antigos.
+
+---
 
 ## 4. Ferramentas Avançadas
 ### PgBackRest
