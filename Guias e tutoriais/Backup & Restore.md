@@ -31,7 +31,7 @@ bash
 - -F c: Formato personalizado (compactado).
 - -b: Inclui blobs grandes.
 - -v: Modo verboso (detalhes da operação).
-- -t *.pagar*: Faz backup apenas das tabelas que correspondem ao padrão "*.pagar*."
+- -t *.pagar*: Faz backup apenas das tabelas que correspondem ao padrão ***.pagar***.
 - -f pagar.backup: Salva o backup no arquivo pagar.backup.
 
 *Explicação :* Este comando faz backup apenas das tabelas relacionadas ao padrão *.pagar* no banco de dados meudb_admin.
