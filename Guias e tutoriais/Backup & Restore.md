@@ -19,40 +19,43 @@ bash
 - -W: Solicita a senha do usuário.
 - -F t: Formato do backup (tar).
 - meudb_admin: Nome do banco de dados.
-- meudb_admin.tar: Redireciona a saída para um arquivo tar.
+- "> meudb_admin.tar": Redireciona a saída para um arquivo tar.
 
 *Explicação :* Este comando cria um backup completo do banco de dados meudb_admin no formato tar.
 
 ### Backup de Tabelas Específicas
 bash
-Copy
-1
-pg_dump -h localhost -p 5432 -U postgres -F c -b -v -t *.pagar* -f pagar.backup meudb_admin
--F c: Formato personalizado (compactado).
--b: Inclui blobs grandes.
--v: Modo verboso (detalhes da operação).
--t *.pagar*: Faz backup apenas das tabelas que correspondem ao padrão *.pagar*.
--f pagar.backup: Salva o backup no arquivo pagar.backup.
-Explicação : Este comando faz backup apenas das tabelas relacionadas ao padrão *.pagar* no banco de dados meudb_admin.
 
-Backup Excluindo Schema Público
+        pg_dump -h localhost -p 5432 -U postgres -F c -b -v -t *.pagar* -f pagar.backup meudb_admin
+
+- -F c: Formato personalizado (compactado).
+- -b: Inclui blobs grandes.
+- -v: Modo verboso (detalhes da operação).
+- -t *.pagar*: Faz backup apenas das tabelas que correspondem ao padrão *.pagar*.
+- -f pagar.backup: Salva o backup no arquivo pagar.backup.
+
+*Explicação :* Este comando faz backup apenas das tabelas relacionadas ao padrão *.pagar* no banco de dados meudb_admin.
+
+### Backup Excluindo Schema Público
 bash
-Copy
-1
+
 pg_dump -h localhost -p 5432 -U postgres -F c -b -v -N public -f all_sch_except_pub.backup meudb_admin
--N public: Exclui o schema público do backup.
-Explicação : Este comando cria um backup excluindo o schema public.
 
-Backup com Inserts Explícitos
+- -N public: Exclui o schema público do backup.
+
+*Explicação :* Este comando cria um backup excluindo o schema public.
+
+### Backup com Inserts Explícitos
 bash
-Copy
-1
-pg_dump -h localhost -p 5432 -U postgres -F p --column-inserts -f select_tables.backup meudb_admin
--F p: Formato texto plano (SQL).
---column-inserts: Gera instruções INSERT explícitas para cada linha.
-Explicação : Este comando gera um backup SQL com instruções INSERT, útil para restaurações incrementais.
 
-Backup Paralelo
+pg_dump -h localhost -p 5432 -U postgres -F p --column-inserts -f select_tables.backup meudb_admin
+
+- -F p: Formato texto plano (SQL).
+- --column-inserts: Gera instruções INSERT explícitas para cada linha.
+
+*Explicação :* Este comando gera um backup SQL com instruções INSERT, útil para restaurações incrementais.
+
+### Backup Paralelo
 bash
 Copy
 1
