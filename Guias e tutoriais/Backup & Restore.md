@@ -39,7 +39,7 @@ bash
 ### Backup Excluindo Schema Público
 bash
 
-pg_dump -h localhost -p 5432 -U postgres -F c -b -v -N public -f all_sch_except_pub.backup meudb_admin
+        pg_dump -h localhost -p 5432 -U postgres -F c -b -v -N public -f all_sch_except_pub.backup meudb_admin
 
 - -N public: Exclui o schema público do backup.
 
@@ -48,7 +48,7 @@ pg_dump -h localhost -p 5432 -U postgres -F c -b -v -N public -f all_sch_except_
 ### Backup com Inserts Explícitos
 bash
 
-pg_dump -h localhost -p 5432 -U postgres -F p --column-inserts -f select_tables.backup meudb_admin
+        pg_dump -h localhost -p 5432 -U postgres -F p --column-inserts -f select_tables.backup meudb_admin
 
 - -F p: Formato texto plano (SQL).
 - --column-inserts: Gera instruções INSERT explícitas para cada linha.
@@ -57,30 +57,35 @@ pg_dump -h localhost -p 5432 -U postgres -F p --column-inserts -f select_tables.
 
 ### Backup Paralelo
 bash
-Copy
-1
-pg_dump -h localhost -p 5432 -U postgres -j 3 -Fd -f algumdiretorio/ meudb_admin
--j 3: Usa 3 processos paralelos.
--Fd: Formato diretório (suporta backups paralelos).
-Explicação : Este comando realiza um backup paralelo em formato de diretório.
 
-Backup Global (pg_dumpall)
-bash
-Copy
-1
-pg_dumpall -h localhost -U postgres --port=5432 -f myglobals.sql --globals-only
---globals-only: Faz backup apenas dos objetos globais (roles, tablespaces, etc.).
-Explicação : Este comando salva as configurações globais do cluster PostgreSQL.
 
-2. Métodos de Restauração
-Restauração com psql
+        pg_dump -h localhost -p 5432 -U postgres -j 3 -Fd -f algumdiretorio/ meudb_admin
+
+- -j 3: Usa 3 processos paralelos.
+- -Fd: Formato diretório (suporta backups paralelos).
+
+*Explicação :* Este comando realiza um backup paralelo em formato de diretório.
+
+### Backup Global (pg_dumpall)
 bash
-Copy
-1
-psql -U username -f backupfile.sql
--U username: Usuário para autenticação.
--f backupfile.sql: Arquivo SQL contendo o backup.
-Explicação : Este comando restaura um backup SQL no banco de dados especificado.
+
+        pg_dumpall -h localhost -U postgres --port=5432 -f myglobals.sql --globals-only
+
+- --globals-only: Faz backup apenas dos objetos globais (roles, tablespaces, etc.).
+
+*Explicação :* Este comando salva as configurações globais do cluster PostgreSQL.
+
+## 2. Métodos de Restauração
+
+### Restauração com psql
+bash
+
+        psql -U username -f backupfile.sql
+
+- -U username: Usuário para autenticação.
+- -f backupfile.sql: Arquivo SQL contendo o backup.
+
+*Explicação :* Este comando restaura um backup SQL no banco de dados especificado.
 
 Restauração com pg_restore
 bash
