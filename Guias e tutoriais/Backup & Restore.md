@@ -29,10 +29,15 @@ bash
         pg_dump -h localhost -p 5432 -U postgres -F c -b -v -t *.pagar* -f pagar.backup meudb_admin
   
    > -h localhost: Especifica o host do banco de dados.
+
    > -F c: Formato personalizado (compactado).
+   
    > -b: Inclui blobs grandes.
+   
    > -v: Modo verboso (detalhes da operação).
+   
    > -t *.pagar*: Faz backup apenas das tabelas que correspondem ao padrão *.pagar*.
+   
    > -f pagar.backup: Salva o backup no arquivo pagar.backup.
 
 Explicação : Este comando faz backup apenas das tabelas relacionadas ao padrão *.pagar* no banco de dados meudb_admin.
