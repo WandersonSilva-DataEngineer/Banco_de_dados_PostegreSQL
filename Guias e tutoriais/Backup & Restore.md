@@ -10,7 +10,9 @@ O comando pg_dump é uma ferramenta poderosa para realizar backups lógicos de t
 
 ### Backup Completo em Formato Tar
 - bash
+
         pg_dump -h localhost -p 5432 -U postgres -W -F t meudb_admin > meudb_admin.tar
+        
 - -h localhost: Especifica o host do banco de dados.
 - -p 5432: Porta do PostgreSQL.
 - -U postgres: Usuário para autenticação.
