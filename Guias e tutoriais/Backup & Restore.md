@@ -183,6 +183,7 @@ ini
         pg1-path=/var/lib/postgresql/data
 
 3- Execute o backup:
+
 bash
 
         pgbackrest --stanza=meudb_admin --type=full backup
@@ -198,6 +199,7 @@ O **PITR** permite restaurar o banco de dados até um ponto específico no tempo
 
 ### Configuração
 1- Habilite o WAL Archiving no postgresql.conf:
+
 conf
 
         wal_level = replica
@@ -205,11 +207,13 @@ conf
         archive_command = 'cp %p /caminho/para/wal/%f'
 
 2- Realize um backup base:
+
 bash
 
         pg_basebackup -U postgres -D /caminho/para/backup --wal-method=stream
 
 3- Configure o arquivo recovery.conf:
+
 conf
 
         restore_command = 'cp /caminho/para/wal/%f %p'
@@ -221,11 +225,13 @@ O **Barman** é uma ferramenta externa para gerenciamento centralizado de backup
 
 ### Configuração
 1- Instale o Barman:
+
 bash
 
         sudo apt install barman
 
 2- Configure o arquivo /etc/barman.conf:
+
 ini
 
         [meudb_admin]
@@ -234,15 +240,17 @@ ini
         backup_method = postgres
 
 3- Execute o backup:
+
 bash
 
         barman backup meudb_admin
 
 4- Restauração:
+
 bash
 
         barman recover meudb_admin latest /var/lib/postgresql/data
 
-##Conclusão
+## Conclusão
 
 Este guia apresenta métodos de backup e restauração no PostgreSQL, desde comandos básicos até ferramentas avançadas como PgBackRest , PITR e Barman . Use essas informações para implementar estratégias eficientes de backup e garantir a segurança dos seus dados.
